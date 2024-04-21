@@ -5,6 +5,8 @@
 
 
 //  These functions are used to control the intake 
-extern void clawopen(int speed);
-extern void clawclose(int speed);
-extern void clawStop(); 
+extern pros::ADIDigitalOut left_intake;
+extern pros::ADIDigitalOut right_intake;
+extern pros::ADIDigitalOut claw;
+extern pros::ADIDigitalOut PTO;
+extern pros::ADIDigitalOut wings;

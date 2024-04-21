@@ -219,10 +219,10 @@ if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
 
     //claw control
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-      hang.set_value(true);
+      claw.set_value(true);
     }
     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-      hang.set_value(false);
+      claw.set_value(false);
     }
 
 
