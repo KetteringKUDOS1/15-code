@@ -1,18 +1,13 @@
-#include "claw.hpp"
-#include "pros/motors.h"
-#include "pros/motors.hpp"
+#include "piston.hpp"
+
+pros::ADIDigitalOut left_intake(3);
+pros::ADIDigitalOut right_intake(4);
+pros::ADIDigitalOut wings(8);
+pros::ADIDigitalOut hang(1);
+pros::ADIDigitalOut PTO(2);
 
 
 
-pros::Motor claw_motor(10, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_DEGREES);  // sets up the motor for the intake
 
 
-void clawclose(int speed){
-    claw_motor.move_velocity(speed); // move the motor at speed
-}
-void clawopen(int speed){
-    claw_motor.move_velocity(-speed); // negative speed to reverse the motor
-}
-void clawStop(){
-    claw_motor.move_velocity(0);  // sets the speed of the motor to 0
-}
+
