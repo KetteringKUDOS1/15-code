@@ -1,5 +1,7 @@
 #include "EZ-Template/util.hpp"
 #include "main.h"
+#include "claw.hpp"
+#include "clawv2.hpp"
 #include "pros/motors.h"
 #include "pros/rtos.h"
 #include "pros/rtos.hpp"
@@ -252,3 +254,40 @@ void interfered_example() {
 // Make your own autonomous functions here!
 // . . .
 
+void demdawgsv(){
+
+  resetv2();
+  clawclose(600);
+  degreeup(100);
+  chassis.set_drive_pid(37, 127 ,true);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(-15, 127 ,true);
+  chassis.wait_drive();
+  chassis.set_turn_pid(90, TURN_SPEED);
+  chassis.wait_drive();
+
+  clawopen(600);
+
+  degreeup(965);
+pros::delay(250);
+  chassis.set_drive_pid(5, 50 ,true);
+  chassis.wait_drive();
+
+chassis.set_drive_pid(3, 50 ,true);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(-40, 127 ,true);
+  chassis.wait_drive();
+
+  degreeup(10000);
+
+  chassis.set_turn_pid(27, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(15, 127 ,true);
+  chassis.wait_drive();
+pros::delay(500);
+clawclose(600);
+
+}
