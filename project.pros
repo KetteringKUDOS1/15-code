@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "dem dawgs",
+    "project_name": "updated code",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -188,7 +188,7 @@
       }
     },
     "upload_options": {
-      "description": "dawayne code goes crazy",
+      "description": "",
       "slot": 2,
       "icon": "pizza"
     }
