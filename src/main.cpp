@@ -3,8 +3,9 @@
 #include "autons.hpp"
 #include "display/lv_objx/lv_btnm.h"
 #include "display/lv_objx/lv_imgbtn.h"
-#include "claw.hpp"
-#include "clawv2.hpp"
+#include "intake.hpp"
+#include "piston.cpp"
+#include "PTO_motors.cpp"
 #include "pros/adi.h"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
@@ -21,28 +22,28 @@
 Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  {1,11}
+  {-1, -2, 3}
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  ,{-9,-20}
+  ,{4, 5, -6}
 
   // IMU Port
   ,7
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
-  ,4.125
+  ,3.25
 
   // Cartridge RPM
   //   (or tick per rotation if using tracking wheels)
-  ,200
+  ,600
 
   // External Gear Ratio (MUST BE DECIMAL)
   //    (or gear ratio of tracking wheel)
   // eg. if your drive is 84:36 where the 36t is powered, your RANTIO would be 2.333.
   // eg. if your drive is 36:60 where the 60t is powered, your RATIO would be 0.6.
-  ,1
+  ,0.6
 
   // Uncomment if using tracking wheels
   /*
@@ -93,7 +94,7 @@ void initialize() {
    // Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
     //Auton("Combine all 3 movements", combining_movements),
     //Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
-    Auton("auton for mock competition", demdawgsv),
+    Auton("auton for mock competition", interfered_example),
   });
 
   // Initialize chassis and auton selector
@@ -164,6 +165,8 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+int PTO_value;
 void opcontrol() {
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
@@ -182,28 +185,50 @@ void opcontrol() {
 
 
 
-        //claw control
+        //intake control
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-      clawclose(600);  // Intake forward if R2 is pressed
+      intake_out();  // Intake forward if R2 is pressed
     }
     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      clawopen(600); // Intake backward if R1 is pressed
+      intake_in(); // Intake backward if R1 is pressed
     }
     else {
-      clawStop();  // Stop intake
+      intake_stop();  // Stop intake
       
     }
 
+    //intake extension
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+      left_intake.set_value(true);
+      right_intake.set_value(true);
+    }
+    else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+      left_intake.set_value(false);
+      right_intake.set_value(false);
+    }
 
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-      up(100);  // lift up if L1 is pressed
+    //PTO control
+if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+    PTO.set_value(true);
+    PTO_value = 1;
     }
-    else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-      down(100); // lift down if L2 is pressed
+    else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+      PTO.set_value(false);
+    PTO_value = 0;
     }
-    else {
-      stop();  // lift stops
-      
+
+    //claw control
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+      hang.set_value(true);
+    }
+    else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+      hang.set_value(false);
+    }
+
+
+    while (PTO_value == 1){
+      left_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+      right_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
     }
   }
 }
