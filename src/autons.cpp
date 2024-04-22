@@ -239,25 +239,83 @@ void tug (int attempts) {
 void interfered_example() {
   extend();
 
+intake_motor.move_velocity(-50);
+
  chassis.set_drive_pid(48, DRIVE_SPEED, true);
  chassis.wait_drive();
 
  chassis.set_turn_pid(-45, TURN_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(15, DRIVE_SPEED, true);
+  chassis.set_drive_pid(18, DRIVE_SPEED, true);
  chassis.wait_drive();
 
  chassis.set_turn_pid(45, TURN_SPEED);
   chassis.wait_drive();
 
-  intake_motor.move_velocity(600);
+  intake_motor.move_velocity(500);
 
-  chassis.set_drive_pid(15, DRIVE_SPEED, true);
+  chassis.set_drive_pid(12, DRIVE_SPEED, true);
  chassis.wait_drive();
 
  chassis.set_drive_pid(-8, 60, true);
  chassis.wait_drive();
+
+ chassis.set_turn_pid(-45, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(12, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
+ chassis.set_swing_pid(ez::RIGHT_SWING, -90, TURN_SPEED);
+  chassis.wait_drive();
+
+  retract();
+
+intake_motor.move_velocity(-600);
+
+pros::delay(250);
+
+  chassis.set_drive_pid(15, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
+ chassis.set_drive_pid(-15, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
+ chassis.set_swing_pid(ez::RIGHT_SWING, -45, TURN_SPEED);
+  chassis.wait_drive();
+
+chassis.set_drive_pid(-12, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
+
+ chassis.set_turn_pid(-133, TURN_SPEED);
+  chassis.wait_drive();
+
+   extend();
+
+intake_motor.move_velocity(500);
+
+chassis.set_drive_pid(62, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
+
+
+ chassis.set_swing_pid(ez::LEFT_SWING, -25, TURN_SPEED);
+  chassis.wait_drive();
+
+chassis.set_swing_pid(ez::RIGHT_SWING, 0, TURN_SPEED);
+  chassis.wait_drive();
+  
+  wings.set_value(true);
+
+retract();
+
+intake_motor.move_velocity(-600);
+
+chassis.set_drive_pid(60, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
 
 
 }
