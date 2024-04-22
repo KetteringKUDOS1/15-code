@@ -1,5 +1,7 @@
 #include "EZ-Template/util.hpp"
 #include "main.h"
+#include "declare.hpp"
+#include "piston.hpp"
 #include "pros/motors.h"
 #include "pros/rtos.h"
 #include "pros/rtos.hpp"
@@ -8,6 +10,7 @@
 // For instalattion, upgrading, documentations and tutorials, check out website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
+
 
 
 const int DRIVE_SPEED = 90; // This is 110/127 (around 87% of max speed).  We don't suggest making this 127.
@@ -234,21 +237,34 @@ void tug (int attempts) {
 // If there is no interference, robot will drive forward and turn 90 degrees. 
 // If interfered, robot will drive forward and then attempt to drive backwards. 
 void interfered_example() {
- chassis.set_drive_pid(24, DRIVE_SPEED, true);
+  extend();
+
+ chassis.set_drive_pid(48, DRIVE_SPEED, true);
  chassis.wait_drive();
 
- if (chassis.interfered) {
-   tug(3);
-   return;
- }
+ chassis.set_turn_pid(-45, TURN_SPEED);
+  chassis.wait_drive();
 
- chassis.set_turn_pid(90, TURN_SPEED);
+  chassis.set_drive_pid(15, DRIVE_SPEED, true);
  chassis.wait_drive();
+
+ chassis.set_turn_pid(45, TURN_SPEED);
+  chassis.wait_drive();
+
+  intake_motor.move_velocity(600);
+
+  chassis.set_drive_pid(15, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
+ chassis.set_drive_pid(-8, 60, true);
+ chassis.wait_drive();
+
+
 }
+
 
 
 
 // . . .
 // Make your own autonomous functions here!
 // . . .
-

@@ -1,11 +1,10 @@
 #include "main.h"
+#include "piston.hpp"
+#include "declare.hpp"
 #include "EZ-Template/util.hpp"
 #include "autons.hpp"
 #include "display/lv_objx/lv_btnm.h"
 #include "display/lv_objx/lv_imgbtn.h"
-#include "intake.hpp"
-#include "piston.cpp"
-#include "PTO_motors.cpp"
 #include "pros/adi.h"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
@@ -16,7 +15,6 @@
 // For instalattion, upgrading, documentations and tutorials, check out website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
-
 
 // Chassis constructor
 Drive chassis (
@@ -43,7 +41,7 @@ Drive chassis (
   //    (or gear ratio of tracking wheel)
   // eg. if your drive is 84:36 where the 36t is powered, your RANTIO would be 2.333.
   // eg. if your drive is 36:60 where the 60t is powered, your RATIO would be 0.6.
-  ,0.6
+  ,1.6
 
   // Uncomment if using tracking wheels
   /*
@@ -77,7 +75,7 @@ void initialize() {
   // Configure your chassis controls
   chassis.toggle_modify_curve_with_controller(true); // Enables modifying the controller curve with buttons on the joysticks
   chassis.set_active_brake(0.1); // Sets the active brake kP. We recommend 0.1.
-  chassis.set_curve_default(0.75, 0.9999999); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
+  chassis.set_curve_default(0.75, 0); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
   default_constants(); // Set the drive to your own constants from autons.cpp!
   exit_condition_defaults(); // Set the exit conditions to your own constants from autons.cpp!
 
@@ -94,7 +92,7 @@ void initialize() {
    // Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
     //Auton("Combine all 3 movements", combining_movements),
     //Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
-    Auton("auton for mock competition", interfered_example),
+    Auton("auton for mock competition",interfered_example),
   });
 
   // Initialize chassis and auton selector
@@ -187,13 +185,13 @@ void opcontrol() {
 
         //intake control
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-      intake_out();  // Intake forward if R2 is pressed
+      intake_motor.move_velocity(-600);
     }
     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      intake_in(); // Intake backward if R1 is pressed
+      intake_motor.move_velocity(600);
     }
     else {
-      intake_stop();  // Stop intake
+      intake_motor.move_velocity(0);  // Stop intake
       
     }
 
@@ -226,7 +224,7 @@ if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
     }
 
 
-    while (PTO_value == 1){
+     if(PTO_value == 1){
       left_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
       right_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
     }
