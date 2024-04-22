@@ -215,18 +215,25 @@ if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
     PTO_value = 0;
     }
 
-    //claw control
+    //wing control
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-      claw.set_value(true);
+      wings.set_value(true);
     }
     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-      claw.set_value(false);
+      wings.set_value(false);
     }
 
 
      if(PTO_value == 1){
       left_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
       right_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+      //claw control
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+      claw.set_value(true);
+    }
+    else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+      claw.set_value(false);
+    }
     }
   }
 }
