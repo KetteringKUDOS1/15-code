@@ -301,6 +301,12 @@ pros::delay(250);
  chassis.set_drive_pid(-15, DRIVE_SPEED, true);
  chassis.wait_drive();
 
+ chassis.set_drive_pid(15, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
+ chassis.set_drive_pid(-15, DRIVE_SPEED, true);
+ chassis.wait_drive();
+
  chassis.set_swing_pid(ez::RIGHT_SWING, -45, TURN_SPEED);
   chassis.wait_drive();
 
@@ -371,7 +377,7 @@ intake_motor.move_velocity(-350);
   chassis.set_drive_pid(-10, DRIVE_SPEED, true);
  chassis.wait_drive();
 
- chassis.set_turn_pid(133, TURN_SPEED);
+ chassis.set_turn_pid(130, TURN_SPEED);
   chassis.wait_drive();
 
 extend();

@@ -92,7 +92,7 @@ void initialize() {
    // Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
     //Auton("Combine all 3 movements", combining_movements),
     //Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
-    Auton("auton for mock competition",interfered_example),
+    Auton("auton for 6 tribal and awp ",interfered_example),
   });
 
   // Initialize chassis and auton selector
@@ -215,24 +215,34 @@ if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
     PTO_value = 0;
     }
 
-    //wing control
+    //wing control uncommrnt the commented  controls when 15" is finalized
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
       wings.set_value(true);
+      //left_wing.set_value(true);
+      //right_wing.set_value(true);
     }
     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
       wings.set_value(false);
+      //left_wing.set_value(false);
+      //right_wing.set_value(fasle);
     }
 
-
+    //PTO control uncomment the commented  controls when 15" is finalized
      if(PTO_value == 1){
       left_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
       right_PTO_motor = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
       //claw control
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
       claw.set_value(true);
+      wings.set_value(false);
+      //left_wing.set_value(false);
+      //right_wing.set_value(fasle);
     }
     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
       claw.set_value(false);
+      wings.set_value(false);
+      //left_wing.set_value(false);
+      //right_wing.set_value(fasle);
     }
     }
   }
